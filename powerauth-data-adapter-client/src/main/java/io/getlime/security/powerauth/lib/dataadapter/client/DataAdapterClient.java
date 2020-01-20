@@ -39,7 +39,6 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +117,7 @@ public class DataAdapterClient {
      * @return Response with user details.
      * @throws DataAdapterClientErrorException Thrown when client request fails or user does not exist.
      */
-    public ObjectResponse<UserDetailResponse> lookupUser(String username, String organizationId, X509Certificate clientCertificate, OperationContext operationContext) throws DataAdapterClientErrorException {
+    public ObjectResponse<UserDetailResponse> lookupUser(String username, String organizationId, String clientCertificate, OperationContext operationContext) throws DataAdapterClientErrorException {
         try {
             // Exchange authentication request with data adapter.
             UserLookupRequest request = new UserLookupRequest(username, organizationId, clientCertificate, operationContext);

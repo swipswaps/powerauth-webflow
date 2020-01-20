@@ -69,9 +69,9 @@ public class ClientController {
             ByteArrayInputStream is = new ByteArrayInputStream(certificate.getBytes(StandardCharsets.UTF_8));
             X509Certificate clientCertificate = (X509Certificate) factory.generateCertificate(is);
             clientCertificate.checkValidity();
-            // Save parsed TLS client certificate in HTTP session
+            // Save raw TLS client certificate in HTTP session
             synchronized (httpSession.getServletContext()) {
-                httpSession.setAttribute(HttpSessionAttributeNames.CLIENT_CERTIFICATE, clientCertificate);
+                httpSession.setAttribute(HttpSessionAttributeNames.CLIENT_CERTIFICATE, certificate);
             }
         } catch (Exception ex) {
             logger.warn(ex.getMessage(), ex);

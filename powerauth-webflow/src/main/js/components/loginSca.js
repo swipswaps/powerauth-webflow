@@ -189,7 +189,7 @@ export default class LoginSca extends React.Component {
 
     verifyClientCertificate() {
         const organizationId = this.props.context.chosenOrganizationId;
-        const certificateVerificationUrl = this.props.context.certificateVerificationUrl;
+        const certificateVerificationUrl = this.props.context.clientCertificateVerificationUrl;
         const dispatch = this.props.dispatch;
         dispatch(checkClientCertificate(certificateVerificationUrl, function() {
             // Authentication is performed using client certificate
@@ -231,7 +231,7 @@ export default class LoginSca extends React.Component {
                     <FormControl autoComplete="new-password" ref={usernameField} type="text" maxLength={usernameMaxLength}
                                  placeholder={formatMessage({id: 'login.loginNumber'})} autoFocus/>
                 </FormGroup>
-                {this.props.context.certificateEnabled ? (
+                {this.props.context.clientCertificateAuthenticationEnabled ? (
                     <FormGroup>
                         <div onClick={this.verifyClientCertificate} className="client-certificate-active">
                             <FormattedMessage id="clientCertificate.use"/>

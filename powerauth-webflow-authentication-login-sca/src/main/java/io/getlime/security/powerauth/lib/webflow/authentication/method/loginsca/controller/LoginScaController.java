@@ -57,7 +57,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import java.security.cert.X509Certificate;
 import java.util.List;
 
 
@@ -125,10 +124,10 @@ public class LoginScaController extends AuthMethodController<LoginScaAuthRequest
             if (userId == null) {
                 // First time invocation, user ID is not available yet
                 userIdAlreadyAvailable = false;
-                X509Certificate clientCertificate = getClientCertificateFromHttpSession();
+                String clientCertificate = getClientCertificateFromHttpSession();
                 String username = request.getUsername();
                 // Verify username format
-                if ((clientCertificate == null && username == null) || !username.matches(USERNAME_VALIDATION_REGEXP)) {
+                if ((clientCertificate == null && username == null) || (username != null && !username.matches(USERNAME_VALIDATION_REGEXP))) {
                     logger.warn("Invalid username: {}", username);
                     // Send error in case username format is not acceptable
                     LoginScaAuthResponse response = new LoginScaAuthResponse();
@@ -262,9 +261,9 @@ public class LoginScaController extends AuthMethodController<LoginScaAuthRequest
      * Get client TLS certificate from HTTP session.
      * @return Client certificate.
      */
-    private X509Certificate getClientCertificateFromHttpSession() {
+    private String getClientCertificateFromHttpSession() {
         synchronized (httpSession.getServletContext()) {
-            return (X509Certificate) httpSession.getAttribute(HttpSessionAttributeNames.CLIENT_CERTIFICATE);
+            return (String) httpSession.getAttribute(HttpSessionAttributeNames.CLIENT_CERTIFICATE);
         }
     }
 

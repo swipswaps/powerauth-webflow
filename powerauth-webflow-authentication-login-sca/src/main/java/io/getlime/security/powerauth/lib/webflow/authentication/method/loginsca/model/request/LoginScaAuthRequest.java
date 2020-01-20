@@ -30,6 +30,7 @@ public class LoginScaAuthRequest extends AuthStepRequest {
 
     private String username;
     private String organizationId;
+    private boolean clientCertificateUsed;
 
     /**
      * Get username.
@@ -65,8 +66,27 @@ public class LoginScaAuthRequest extends AuthStepRequest {
         this.organizationId = organizationId;
     }
 
+    /**
+     * Get whether client certificate is used for authentication.
+     * @return Whether client certificate is used for authentication.
+     */
+    public boolean isClientCertificateUsed() {
+        return clientCertificateUsed;
+    }
+
+    /**
+     * Set whether client certificate is used for authentication.
+     * @param clientCertificateUsed Whether client certificate is used for authentication.
+     */
+    public void setClientCertificateUsed(boolean clientCertificateUsed) {
+        this.clientCertificateUsed = clientCertificateUsed;
+    }
+
     @Override
     public List<AuthInstrument> getAuthInstruments() {
+        if (isClientCertificateUsed()) {
+            return Collections.singletonList(AuthInstrument.CLIENT_CERTIFICATE);
+        }
         return Collections.emptyList();
     }
 }

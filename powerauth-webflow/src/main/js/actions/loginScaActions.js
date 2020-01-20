@@ -115,12 +115,15 @@ export function init() {
                         }
                     });
                 } else {
+                    console.log(response.data);
                     dispatch({
                         type: "SHOW_SCREEN_SMS",
                         payload: {
                             loading: true,
                             error: false,
                             message: "",
+                            certificateEnabled: response.data.clientCertificateAuthenticationEnabled,
+                            certificateVerificationUrl: response.data.clientCertificateVerificationUrl
                         }
                     });
                 }
@@ -188,6 +191,27 @@ export function organizationConfigurationError() {
             payload: {
                 message: "organization.configurationError"
             }
+        })
+    }
+}
+
+/**
+ * Verify client TLS certificate.
+ * @param callbackOnSuccess Callback in case of successful verification.
+ * @param certificateVerificationUrl URL to be used to verify client TLS certificate.
+ * @returns {Function} No return value.
+ */
+export function checkClientCertificate(callbackOnSuccess, certificateVerificationUrl) {
+    return function (dispatch) {
+        axios.post(certificateVerificationUrl, {}, {
+            // Send cookies so that HTTP session is the same
+            withCredentials: true
+        }).then((response) => {
+            callbackOnSuccess();
+            return null;
+        }).catch((error) => {
+            // TODO - show user friendly error message
+            dispatchError(dispatch, error);
         })
     }
 }

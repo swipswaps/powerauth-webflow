@@ -39,6 +39,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -112,14 +113,15 @@ public class DataAdapterClient {
      *
      * @param username Username for user account which is being looked up.
      * @param organizationId Organization ID for which the user ID is assigned to.
+     * @param clientCertificate Client TLS certificate.
      * @param operationContext Operation context.
      * @return Response with user details.
      * @throws DataAdapterClientErrorException Thrown when client request fails or user does not exist.
      */
-    public ObjectResponse<UserDetailResponse> lookupUser(String username, String organizationId, OperationContext operationContext) throws DataAdapterClientErrorException {
+    public ObjectResponse<UserDetailResponse> lookupUser(String username, String organizationId, X509Certificate clientCertificate, OperationContext operationContext) throws DataAdapterClientErrorException {
         try {
             // Exchange authentication request with data adapter.
-            UserLookupRequest request = new UserLookupRequest(username, organizationId, operationContext);
+            UserLookupRequest request = new UserLookupRequest(username, organizationId, clientCertificate, operationContext);
             HttpEntity<ObjectRequest<UserLookupRequest>> entity = new HttpEntity<>(new ObjectRequest<>(request));
             ResponseEntity<ObjectResponse<UserDetailResponse>> response = restTemplate.exchange(serviceUrl + "/api/auth/user/lookup", HttpMethod.POST, entity, new ParameterizedTypeReference<ObjectResponse<UserDetailResponse>>() {
             });

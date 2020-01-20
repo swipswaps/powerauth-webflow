@@ -17,6 +17,8 @@ package io.getlime.security.powerauth.lib.dataadapter.model.request;
 
 import io.getlime.security.powerauth.lib.dataadapter.model.entity.OperationContext;
 
+import java.security.cert.X509Certificate;
+
 /**
  * Lookup user identity by username.
  *
@@ -35,6 +37,11 @@ public class UserLookupRequest {
     private String organizationId;
 
     /**
+     * Client TLS certificate.
+     */
+    private X509Certificate clientCertificate;
+
+    /**
      * Operation context.
      */
     private OperationContext operationContext;
@@ -49,11 +56,13 @@ public class UserLookupRequest {
      * Constructor with username and organization ID.
      * @param username Username for this lookup request.
      * @param organizationId Organization ID for this lookup request.
+     * @param clientCertificate Client TLS certificate.
      * @param operationContext Operation context.
      */
-    public UserLookupRequest(String username, String organizationId, OperationContext operationContext) {
+    public UserLookupRequest(String username, String organizationId, X509Certificate clientCertificate, OperationContext operationContext) {
         this.username = username;
         this.organizationId = organizationId;
+        this.clientCertificate = clientCertificate;
         this.operationContext = operationContext;
     }
 
@@ -87,6 +96,22 @@ public class UserLookupRequest {
      */
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
+    }
+
+    /**
+     * Get client TLS certificate.
+     * @return Client TLS certificate.
+     */
+    public X509Certificate getClientCertificate() {
+        return clientCertificate;
+    }
+
+    /**
+     * Set client TLS certificate.
+     * @param clientCertificate Client TLS certificate.
+     */
+    public void setClientCertificate(X509Certificate clientCertificate) {
+        this.clientCertificate = clientCertificate;
     }
 
     /**
